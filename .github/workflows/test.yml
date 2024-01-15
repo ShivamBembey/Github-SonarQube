@@ -1,0 +1,50 @@
+name: Example workflow for Maven using Snyk
+on:
+  workflow_dispatch:
+jobs:
+  snyk-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/maven@master
+        continue-on-error: True
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --sarif-file-output=snyk.sarif
+          command: monitor
+          
+    
+      # - name: Upload result to GitHub Code Scanning
+      #   uses: github/codeql-action/upload-sarif@v2
+      #   with:
+      #     sarif_file: snyk.sarif
+
+      # - name: Package Snyk report
+      #   run: zip -r snyk-report.zip snyk.sarif
+      #   if: always()
+
+      # - name: Upload Snyk report as artifact
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: snyk-report
+      #     path: snyk.sarif
+      
+      
+          # args: --json > snyk-report.json
+    
+
+      # - name: Package Snyk report
+      #   run: zip -r snyk-report.zip snyk-report.json
+
+      # - name: Upload Snyk Report ZIP as Artifact
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: snyk-report
+      #     # path: snyk-report.zip
+      #     path: snyk-report.json
+
+     
+
+  

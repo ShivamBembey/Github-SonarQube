@@ -1,0 +1,15 @@
+name: test workflow
+on:
+  
+  workflow_dispatch:
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Run Snyk to check for vulnerabilities
+        run: snyk test --sarif=snyk-report.sarif
+        continue-on-error: True
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
